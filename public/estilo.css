@@ -1,0 +1,167 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f0f0f0;
+    color: #333;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+h1, h2 {
+    margin-bottom: 10px;
+}
+
+/* Layout principal */
+main {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-gap: 20px;
+}
+
+/* Seções */
+section {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+}
+
+/* Tabuleiro */
+.tabuleir {
+    display: grid;
+    grid-template-columns: repeat(3, 80px);
+    grid-template-rows: repeat(3, 80px);
+    gap: 5px;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+#tabuleiro-section {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f7f7f7;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    font-family: Arial, sans-serif;
+}
+
+#tabuleiro-section h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.jogadores-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+.jogador {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.jogador label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.jogador input {
+    padding: 5px 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    margin-bottom: 5px;
+}
+
+.jogador .vitorias {
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.tabuleiro {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+}
+
+.celula {
+    width: 100px;
+    height: 100px;
+    background-color: #fff;
+    border: 2px solid #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s;
+}
+
+.celula:hover {
+    background-color: #e0e0e0;
+}
+
+
+.celula {
+    background: #e0e0e0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.celula:hover {
+    background: #d0d0d0;
+}
+
+/* Ranking e lista de jogos */
+.ranking, .lista-jogos {
+    list-style: none;
+}
+
+.ranking li, .lista-jogos li {
+    padding: 8px;
+    border-bottom: 1px solid #ccc;
+}
+
+.ranking li:last-child, .lista-jogos li:last-child {
+    border-bottom: none;
+}
+
+/* Replay */
+#replay-controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+#replay-controls button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background: #1976d2;
+    color: #fff;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+#replay-controls button:hover {
+    background: #115293;
+}
