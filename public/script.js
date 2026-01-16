@@ -3,6 +3,15 @@ const URL_JOGAR = `${API_BASE}/jogar`;
 const URL_JOGADORES = `${API_BASE}/jogadores`;
 const URL_JOGOS = `${API_BASE}/jogos`;
 
+// Elementos DOM
+const tabuleiro = document.getElementById("tabuleiro");
+const rankingEl = document.getElementById("ranking-jogadores");
+const listaJogosEl = document.getElementById("lista-jogos");
+const replayTabuleiro = document.getElementById("replay-tabuleiro");
+let replayJogadas = [];
+let replayIndex = 0;
+let replayInterval = null;
+
 let jogoAtual = null;
 
 // Botão Novo Jogo
@@ -21,6 +30,8 @@ document.getElementById("btn-novo-jogo").addEventListener("click", () => {
     jogoAtual = null;
     atualizarTabuleiro([]);
     atualizarListaJogos();
+    atualizarRanking();
+    atualizarReplayTabuleiro();
 });
 
 async function jogar(idJogo = null, nomeJogador1, nomeJogador2, posicao) {
@@ -60,15 +71,15 @@ function atualizarTabuleiro(jogadas) {
     const i1 = document.getElementById("nomeJogador1");
     const i2 = document.getElementById("nomeJogador2");
 
-    i1.value = jogoAtual.jogador1.nome;
+    i1.value = jogoAtual?.jogador1?.nome ?? "";
     i1.disabled = true;
-    i2.value = jogoAtual.jogador2.nome;
+    i2.value = jogoAtual?.jogador2?.nome ?? "";
     i2.disabled = true;
 
     document.getElementById("vitorias1").innerText =
-        jogoAtual.jogador1.qtdVitorias;
+        jogoAtual?.jogador1?.qtdVitorias;
     document.getElementById("vitorias2").innerText =
-        jogoAtual.jogador2.qtdVitorias;
+        jogoAtual?.jogador2?.qtdVitorias;
 
     document
         .querySelectorAll(".tabuleiro .celula")
@@ -197,15 +208,25 @@ function iniciarReplay(jogo) {
 }
 
 function atualizarReplayTabuleiro() {
-    replayTabuleiro
-        .querySelectorAll(".celula")
-        .forEach((c) => (c.textContent = ""));
+    // SELECIONA AS CÉLULAS MINI
+    const celulasMini = document.querySelectorAll(".celula-mini");
+
+    // Limpa todas
+    celulasMini.forEach((c) => (c.textContent = ""));
+
+    // Preenche até o index atual
     for (let i = 0; i <= replayIndex; i++) {
-        const j = replayJogadas[i];
-        const celula = replayTabuleiro.querySelector(
-            `.celula[data-posicao='${j.posicao}']`
-        );
-        if (celula) celula.textContent = j.simbolo || "";
+        const jogada = replayJogadas[i];
+        if (jogada) {
+            const celula = document.querySelector(
+                `.celula-mini[data-posicao='${jogada.posicao}']`
+            );
+            if (celula) {
+                celula.textContent = jogada.simbolo;
+                celula.style.color =
+                    jogada.simbolo === "X" ? "var(--primary)" : "var(--accent)";
+            }
+        }
     }
 }
 
@@ -225,6 +246,7 @@ function voltarReplay() {
 function pausarReplay() {
     if (replayInterval) clearInterval(replayInterval);
 }
+
 function continuarReplay() {
     pausarReplay();
     replayInterval = setInterval(() => {
