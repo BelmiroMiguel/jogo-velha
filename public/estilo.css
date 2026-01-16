@@ -1,167 +1,255 @@
-/* Reset básico */
+/* --- VARIÁVEIS E CONFIGURAÇÃO BASE --- */
+:root {
+    --bg-dark: #0b0e14;
+    --card-bg: rgba(255, 255, 255, 0.05);
+    --primary: #00f2ff;
+    --secondary: #7000ff;
+    --accent: #ff0055;
+    --text-main: #e0e6ed;
+    --text-dim: #94a3b8;
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
 }
 
 body {
-    background: #f0f0f0;
-    color: #333;
-    padding: 20px;
+    background: radial-gradient(circle at center, #1a1a2e 0%, var(--bg-dark) 100%);
+    color: var(--text-main);
+    font-family: 'Rajdhani', sans-serif;
+    overflow-x: hidden;
 }
 
+/* --- SCROLLBAR OVERRIDE --- */
+.ranking-list::-webkit-scrollbar,
+.jogos-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.ranking-list::-webkit-scrollbar-track,
+.jogos-list::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.ranking-list::-webkit-scrollbar-thumb,
+.jogos-list::-webkit-scrollbar-thumb {
+    background: var(--secondary);
+    border-radius: 10px;
+}
+
+.ranking-list::-webkit-scrollbar-thumb:hover,
+.jogos-list::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
+}
+
+/* --- LAYOUT PRINCIPAL --- */
 header {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-h1, h2 {
-    margin-bottom: 10px;
-}
-
-/* Layout principal */
-main {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    grid-gap: 20px;
-}
-
-/* Seções */
-section {
-    background: #fff;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 0 8px rgba(0,0,0,0.1);
-}
-
-/* Tabuleiro */
-.tabuleir {
-    display: grid;
-    grid-template-columns: repeat(3, 80px);
-    grid-template-rows: repeat(3, 80px);
-    gap: 5px;
-    justify-content: center;
-    margin-bottom: 10px;
-}
-#tabuleiro-section {
-    max-width: 500px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f7f7f7;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    font-family: Arial, sans-serif;
-}
-
-#tabuleiro-section h2 {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.jogadores-info {
+    height: 80px;
     display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
-.jogador {
-    flex: 1;
+.container {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px 20px 20px;
+}
+
+/* --- PAINÉIS --- */
+.left-panel {
     display: flex;
     flex-direction: column;
 }
 
-.jogador label {
-    font-weight: bold;
-    margin-bottom: 5px;
+.right-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
-.jogador input {
-    padding: 5px 8px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    margin-bottom: 5px;
+.glass-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
-.jogador .vitorias {
-    font-size: 0.9rem;
-    color: #333;
+/* --- PROPORÇÕES DO PAINEL DIREITO --- */
+#ranking-section {
+    height: 25%; /* 25% de altura */
+    min-height: calc(100vh - 75%);
 }
 
+#jogos-section {
+    height: calc(100vh - 33%); /* 75% de altura */
+}
+
+/* --- LISTAGENS BONITAS --- */
+.ranking-list, .jogos-list {
+    list-style: none;
+    overflow-y: auto;
+    overflow-x: visible;
+    flex-grow: 1;
+    margin-top: 15px;
+    padding-right: 5px;
+}
+
+.ranking-list li, .jogos-list li {
+    background: rgba(255, 255, 255, 0.02);
+    margin-bottom: 10px;
+    padding: 12px 15px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 3px solid transparent;
+    transition: var(--transition);
+    cursor: pointer;
+    position: relative;
+}
+
+.ranking-list li.active, .jogos-list li.active {
+    background: rgba(255, 0, 85, 0.15);
+    border-left-color: var(--accent);
+}
+
+.ranking-list li:hover, .jogos-list li:hover {
+    background: rgba(112, 0, 255, 0.15);
+    border-left-color: var(--primary);
+}
+
+.ranking-list li .jogador-info, .jogos-list li .jogo-info {
+    width: 100%;
+}
+/* Seta com animação */
+.ranking-list li::after, .jogos-list li::after {
+    content: '→';
+    font-size: 1.2rem;
+    color: var(--primary);
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: var(--transition);
+}
+
+.ranking-list li:hover::after, .jogos-list li:hover::after {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* --- TABULEIRO --- */
 .tabuleiro {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 5px;
+    grid-template-columns: repeat(3, 120px);
+    gap: 15px;
+    justify-content: center;
+    margin: auto;
 }
 
 .celula {
-    width: 100px;
-    height: 100px;
-    background-color: #fff;
-    border: 2px solid #333;
+    width: 120px;
+    height: 120px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 2px solid rgba(0, 242, 255, 0.1);
+    border-radius: 15px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2rem;
+    font-size: 3rem;
+    font-family: 'Orbitron', sans-serif;
     cursor: pointer;
-    user-select: none;
-    transition: background-color 0.2s;
+    transition: var(--transition);
 }
 
 .celula:hover {
-    background-color: #e0e0e0;
+    border-color: var(--primary);
+    background: rgba(0, 242, 255, 0.05);
+    box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
+    transform: scale(1.05);
 }
 
-
-.celula {
-    background: #e0e0e0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2rem;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background 0.2s;
-}
-
-.celula:hover {
-    background: #d0d0d0;
-}
-
-/* Ranking e lista de jogos */
-.ranking, .lista-jogos {
-    list-style: none;
-}
-
-.ranking li, .lista-jogos li {
-    padding: 8px;
-    border-bottom: 1px solid #ccc;
-}
-
-.ranking li:last-child, .lista-jogos li:last-child {
-    border-bottom: none;
-}
-
-/* Replay */
-#replay-controls {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 10px;
-}
-
-#replay-controls button {
-    padding: 5px 10px;
+/* --- BOTÕES E INPUTS --- */
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
     border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    background: #1976d2;
-    color: #fff;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-family: 'Orbitron';
     font-weight: bold;
-    transition: background 0.2s;
+    cursor: pointer;
+    transition: var(--transition);
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-#replay-controls button:hover {
-    background: #115293;
+.btn-primary:hover {
+    filter: brightness(1.2);
+    box-shadow: 0 0 15px var(--primary);
+    transform: translateY(-2px);
 }
+
+input[type="text"] {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 10px;
+    border-radius: 6px;
+    font-family: 'Rajdhani';
+    width: 100%;
+}
+
+input[type="text"]:focus {
+    border-color: var(--primary);
+    outline: none;
+}
+
+/* --- RESPONSIVIDADE --- */
+@media (max-width: 992px) {
+    .container {
+        grid-template-columns: 1fr;
+        height: auto;
+        overflow-y: visible;
+    }
+
+    .right-panel {
+        height: auto;
+    }
+
+    #ranking-section, #jogos-section {
+        height: 400px; /* Altura fixa em telas menores */
+    }
+}
+
+@media (max-width: 480px) {
+    .tabuleiro {
+        grid-template-columns: repeat(3, 80px);
+    }
+    .celula {
+        width: 80px;
+        height: 80px;
+        font-size: 2rem;
+    }
+}
+
+
+
+.vencedor {
+    background: rgba(0, 255, 0, 0.15) !important;
+    border-left-color: #00ff00 !important;
+    color: #00ff00 !important;
+    padding: 1px 8px !important;
+    border-radius: 10px !important;
+}
+

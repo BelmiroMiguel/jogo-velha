@@ -1,25 +1,28 @@
-// URLs da API
-const API_BASE = "http://localhost:8000/api"; // ajuste pro seu ambiente
+const API_BASE = "http://localhost:8000/api";
 const URL_JOGAR = `${API_BASE}/jogar`;
 const URL_JOGADORES = `${API_BASE}/jogadores`;
 const URL_JOGOS = `${API_BASE}/jogos`;
 
-// Elementos DOM
-const tabuleiro = document.getElementById("tabuleiro");
-const rankingEl = document.getElementById("ranking-jogadores");
-const listaJogosEl = document.getElementById("lista-jogos");
-const replayTabuleiro = document.getElementById("replay-tabuleiro");
-let replayJogadas = [];
-let replayIndex = 0;
-let replayInterval = null;
-
 let jogoAtual = null;
 
-// ==========================
-// FUNÇÕES PRINCIPAIS
-// ==========================
+// Botão Novo Jogo
+document.getElementById("btn-novo-jogo").addEventListener("click", () => {
+    jogoAtual = null;
+    document.getElementById("nomeJogador1").disabled = false;
+    document.getElementById("nomeJogador2").disabled = false;
+    document.getElementById("nomeJogador1").value = "";
+    document.getElementById("nomeJogador2").value = "";
+    document
+        .querySelectorAll(".tabuleiro .celula")
+        .forEach((c) => (c.textContent = ""));
+    console.log("Sistema resetado para novo jogo.");
 
-// 1. Jogar
+    // Resetar tudo e jogoAtual
+    jogoAtual = null;
+    atualizarTabuleiro([]);
+    atualizarListaJogos();
+});
+
 async function jogar(idJogo = null, nomeJogador1, nomeJogador2, posicao) {
     try {
         const res = await fetch(URL_JOGAR, {
@@ -34,122 +37,159 @@ async function jogar(idJogo = null, nomeJogador1, nomeJogador2, posicao) {
         });
 
         const data = await res.json();
-
-        if (res.status != 200) {
-            throw new Error(data.error || "Erro desconhecido");
-        }
+        if (res.status != 200) throw new Error(data.error || "Erro");
 
         jogoAtual = data.jogo;
-
-        if (jogoAtual.status != "decorrer") {
-            alert(
-                `Jogo finalizado! Resultado: ${jogoAtual.status} ${
-                    jogoAtual.jogadorVitoria
-                        ? "- Vencedor: " + jogoAtual.jogadorVitoria.nome
-                        : ""
-                }`
-            );
-        }
-
         atualizarTabuleiro(data.jogo.jogadas);
         atualizarListaJogos();
         atualizarRanking();
 
-        return data;
+        if (jogoAtual.status != "decorrer") {
+            // Pequeno delay para a animação da última peça terminar
+            setTimeout(
+                () => alert(`FIM DE JOGO: ${jogoAtual.status.toUpperCase()}`),
+                300
+            );
+        }
     } catch (err) {
-        alert("Erro ao jogar: " + err);
+        alert(err.message);
     }
 }
-
-// 2. Listar jogadores (ranking)
-async function atualizarRanking() {
-    try {
-        const res = await fetch(URL_JOGADORES);
-        const jogadores = await res.json();
-
-        rankingEl.innerHTML = "";
-        jogadores.forEach((j) => {
-            const li = document.createElement("li");
-            li.textContent = `${j.nome} - Vitórias: ${j.qtdVitorias}, Empates: ${j.qtdEmpates}, Derrotas: ${j.qtdDerrotas}`;
-            rankingEl.appendChild(li);
-        });
-    } catch (err) {
-        console.error("Erro ao buscar ranking:", err);
-    }
-}
-
-// 3. Listar jogos
-async function atualizarListaJogos() {
-    try {
-        const res = await fetch(URL_JOGOS);
-        const jogos = await res.json();
-
-        listaJogosEl.innerHTML = "";
-        jogos.forEach((j) => {
-            const li = document.createElement("li");
-            li.textContent = `Jogo ${j.idJogo}: ${j.jogador1.nome} vs ${j.jogador2.nome} - Status: ${j.status}`;
-            li.addEventListener("click", () => {
-                jogoAtual = j;
-                atualizarTabuleiro(j.jogadas);
-
-                iniciarReplay(j);
-            });
-            listaJogosEl.appendChild(li);
-        });
-    } catch (err) {
-        console.error("Erro ao buscar jogos:", err);
-    }
-}
-
-// ==========================
-// TABULEIRO
-// ==========================
 
 function atualizarTabuleiro(jogadas) {
-    // desabilitar inputs de nome e setar nomes
-    document.getElementById("nomeJogador1").value = jogoAtual.jogador1.nome;
-    document.getElementById("nomeJogador1").disabled = true;
-    document.getElementById("nomeJogador2").value = jogoAtual.jogador2.nome;
-    document.getElementById("nomeJogador2").disabled = true;
+    const i1 = document.getElementById("nomeJogador1");
+    const i2 = document.getElementById("nomeJogador2");
+
+    i1.value = jogoAtual.jogador1.nome;
+    i1.disabled = true;
+    i2.value = jogoAtual.jogador2.nome;
+    i2.disabled = true;
 
     document.getElementById("vitorias1").innerText =
         jogoAtual.jogador1.qtdVitorias;
     document.getElementById("vitorias2").innerText =
         jogoAtual.jogador2.qtdVitorias;
 
-    // Limpa tabuleiro
-    tabuleiro.querySelectorAll(".celula").forEach((c) => (c.textContent = ""));
-    // Preenche jogadas
+    document
+        .querySelectorAll(".tabuleiro .celula")
+        .forEach((c) => (c.textContent = ""));
+
     jogadas.forEach((j) => {
-        const celula = tabuleiro.querySelector(
-            `.celula[data-posicao='${j.posicao}']`
+        const celula = document.querySelector(
+            `.tabuleiro .celula[data-posicao='${j.posicao}']`
         );
-        if (celula) celula.textContent = j.simbolo || ""; // se quiser mostrar X/O ou outro
+        if (celula) {
+            celula.textContent = j.simbolo;
+            celula.style.color = j.simbolo === "X" ? "#00f2ff" : "#ff0055";
+            celula.style.textShadow = `0 0 10px ${
+                j.simbolo === "X" ? "#00f2ff" : "#ff0055"
+            }`;
+        }
     });
 }
 
-// Adiciona clique para jogar
-tabuleiro.querySelectorAll(".celula").forEach((c) => {
+// Event Listeners para o Tabuleiro
+document.querySelectorAll(".tabuleiro .celula").forEach((c) => {
     c.addEventListener("click", () => {
         const pos = parseInt(c.dataset.posicao);
-        jogar(
-            jogoAtual ? jogoAtual.idJogo : null,
-            jogoAtual
-                ? jogoAtual.nomeJogador1
-                : document.getElementById("nomeJogador1").value,
-            jogoAtual
-                ? jogoAtual.nomeJogador2
-                : document.getElementById("nomeJogador2").value,
-            pos
-        );
+        const n1 = document.getElementById("nomeJogador1").value;
+        const n2 = document.getElementById("nomeJogador2").value;
+
+        if (!n1 || !n2) return alert("Insira os nomes dos jogadores!");
+
+        jogar(jogoAtual?.idJogo, n1, n2, pos);
     });
 });
+
+async function atualizarRanking() {
+    const res = await fetch(URL_JOGADORES);
+    const jogadores = await res.json();
+    const rankingEl = document.getElementById("ranking-jogadores");
+
+    rankingEl.innerHTML = jogadores
+        .map(
+            (j, index) => `
+        <li>
+            <span class="jogador-info"><strong>#${index + 1}</strong> ${
+                j.nome
+            }</span>
+            <span class="v-count" style="display: flex; align-items: center; gap: 5px;">
+                <span style="font-size:1.4rem">${j.qtdVitorias}</span>
+                <span style=" ">🏆</span>
+            </span>
+        </li>
+    `
+        )
+        .join("");
+}
+
+async function atualizarListaJogos() {
+    const res = await fetch(URL_JOGOS);
+    const jogos = await res.json();
+    const listaEl = document.getElementById("lista-jogos");
+
+    listaEl.innerHTML = jogos
+        .map(
+            (j) => `
+        <li class="${
+            j.idJogo === jogoAtual?.idJogo ? "active" : ""
+        }" id="jogo-${j.idJogo}">
+            <div >
+                <small>ID #${j.idJogo}</small>
+                <div class="jogo-info">
+                    <span class="${
+                        j.jogador1.idJogador == j.jogadorVitoria?.idJogador
+                            ? "vencedor"
+                            : ""
+                    }">${j.jogador1.nome}</span>
+                    vs
+                    <span class="${
+                        j.jogador2.idJogador == j.jogadorVitoria?.idJogador
+                            ? "vencedor"
+                            : ""
+                    }">${j.jogador2.nome}</span>
+                </div>
+            </div>
+            <span class="status-badge">${j.status}</span>
+        </li>
+    `
+        )
+        .join("");
+
+    // click no item do jogo histórico
+    listaEl.querySelectorAll("li").forEach((li, index) => {
+        li.addEventListener("click", () => {
+            li.classList.add("active");
+            document
+                .querySelectorAll("#lista-jogos li")
+                .forEach((sibling, sIndex) => {
+                    if (sIndex !== index) sibling.classList.remove("active");
+                });
+            iniciarReplay(jogos[index]);
+        });
+    });
+}
 
 // ==========================
 // REPLAY
 // ==========================
 
 function iniciarReplay(jogo) {
+    jogoAtual = jogo;
+    const i1 = document.getElementById("nomeJogador1");
+    const i2 = document.getElementById("nomeJogador2");
+
+    i1.value = jogo.jogador1.nome;
+    i1.disabled = true;
+    i2.value = jogo.jogador2.nome;
+    i2.disabled = true;
+
+    document.getElementById("vitorias1").innerText = jogo.jogador1.qtdVitorias;
+    document.getElementById("vitorias2").innerText = jogo.jogador2.qtdVitorias;
+
+    atualizarTabuleiro(jogo.jogadas);
+
+    // Configurar replay
     replayJogadas = jogo.jogadas;
     replayIndex = 0;
     atualizarReplayTabuleiro();
@@ -215,5 +255,6 @@ document
 // INICIALIZAÇÃO
 // ==========================
 
+// Inicialização
 atualizarRanking();
 atualizarListaJogos();
