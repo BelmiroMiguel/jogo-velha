@@ -18,9 +18,31 @@
         <!-- Coluna Esquerda: Tabuleiro e Controles -->
         <div class="left-panel">
             <section id="tabuleiro-section" class="glass-card">
-                <div class="section-header">
-                    <h2><span class="dot glitch "></span> JOGO DA VELHA</h2>
-                    <button id="btn-novo-jogo" class="btn-primary">Novo Jogo 🎮</button>
+
+                <div class="topo-jogo">
+                    <!-- Esquerda: Título e Botão -->
+                    <div class="section-header">
+                        <h2><span class="dot glitch"></span> JOGO DA VELHA</h2>
+                        <button id="btn-novo-jogo" class="btn-primary">Novo Jogo 🎮</button>
+                    </div>
+
+                    <!-- Direita: Placar -->
+                    <div class="placar-container-terra">
+                        <div class="placar-box">
+                            <span class="placar-titulo">PLACAR</span>
+                            <div class="placar-info">
+                                <span class="jogador-label">X</span>
+                                <span id="score-x" class="score-numero">0</span>
+                            </div>
+
+                            <div class="placar-vs">X</div>
+
+                            <div class="placar-info">
+                                <span id="score-o" class="score-numero">0</span>
+                                <span class="jogador-label">O</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="jogadores-info">
@@ -28,7 +50,7 @@
                         <p class="">X</p>
                         <input type="text" id="nomeJogador1" placeholder="Player X">
                         <div class="stats-mini">
-                            Vitórias: <strong id="vitorias1">0</strong>
+                            Total de Vitórias: <strong id="vitorias1">0</strong>
                         </div>
                     </div>
                     <div class="vs-divider">VS</div>
@@ -36,7 +58,7 @@
                         <p class="">O</p>
                         <input type="text" id="nomeJogador2" placeholder="Player O">
                         <div class="stats-mini">
-                            Vitórias: <strong id="vitorias2">0</strong>
+                            Total de Vitórias: <strong id="vitorias2">0</strong>
                         </div>
                     </div>
                 </div>

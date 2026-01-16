@@ -12,6 +12,10 @@ let replayJogadas = [];
 let replayIndex = 0;
 let replayInterval = null;
 
+// penas para o jogo o momento nao o total de todos
+let placarX = 0;
+let placarO = 0;
+
 let jogoAtual = null;
 
 // Botão Novo Jogo
@@ -26,6 +30,11 @@ document.getElementById("btn-novo-jogo").addEventListener("click", () => {
     document.getElementById("vitorias1").innerText = "0";
     document.getElementById("vitorias2").innerText = "0";
     document.getElementById("vez-jogador").innerText = "X";
+
+    document.getElementById("score-x").innerText = "0";
+    document.getElementById("score-o").innerText = "0";
+    placarX = 0;
+    placarO = 0;
 
     document
         .querySelectorAll(".tabuleiro .celula")
@@ -64,6 +73,20 @@ async function jogar(idJogo = null, nomeJogador1, nomeJogador2, posicao) {
             docVes.innerText = `${vezJogador}`;
         }
         if (jogoAtual.status != "decorrer") {
+            placarX +=
+                jogoAtual.jogador1.idJogador ===
+                jogoAtual.jogadorVitoria?.idJogador
+                    ? 1
+                    : 0;
+            placarO +=
+                jogoAtual.jogador2.idJogador ===
+                jogoAtual.jogadorVitoria?.idJogador
+                    ? 1
+                    : 0;
+
+            document.getElementById("score-x").innerText = placarX;
+            document.getElementById("score-o").innerText = placarO;
+
             // Pequeno delay para a animação da última peça terminar
             setTimeout(() => {
                 mostrarAlerta(
@@ -215,6 +238,11 @@ async function atualizarListaJogos() {
     // click no item do jogo histórico
     listaEl.querySelectorAll("li").forEach((li, index) => {
         li.addEventListener("click", () => {
+            document.getElementById("score-x").innerText = "0";
+            document.getElementById("score-o").innerText = "0";
+            placarX = 0;
+            placarO = 0;
+
             li.classList.add("active");
             document
                 .querySelectorAll("#lista-jogos li")

@@ -45,6 +45,83 @@ body {
     overflow-x: hidden;
 }
 
+/* Container Principal para alinhar os dois lados */
+.topo-jogo {
+    display: flex;
+    justify-content: space-between; /* Manda um para cada ponta */
+    align-items: center; /* Alinha verticalmente ao centro */
+    padding: 15px 25px;
+    background: rgba(255, 255, 255, 0.5); /* Fundo sutil */
+    border-radius: 20px;
+}
+
+/* Estilização do Placar */
+.placar-container-terra {
+    display: flex;
+    align-items: center;
+}
+
+.placar-box {
+    display: flex;
+    align-items: center;
+    background: #efebe9; /* Cor de areia clara */
+    padding: 10px 25px;
+    border-radius: 50px; /* Estilo pílula */
+    border: 2px solid #8d6e63; /* Borda de madeira/terra */
+    box-shadow: 0 4px 0px #d7ccc8; /* Sombra sólida estilo "flat design" */
+}
+
+.placar-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 15px;
+}
+
+.jogador-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    font-weight: 800;
+    color: #5d4037; /* Marrom madeira */
+    letter-spacing: 1px;
+}
+
+.score-numero {
+    font-size: 2rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 900;
+    color: #2e7d32; /* Verde floresta para os pontos */
+    line-height: 1;
+}
+
+.placar-vs {
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: #8d6e63;
+    padding: 0 10px;
+    font-style: italic;
+    opacity: 0.6;
+}
+
+/* Efeito quando o placar muda (opcional) */
+.score-numero.animar {
+    animation: bounce 0.5s ease;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.3); color: #4caf50; }
+}
+
+/* Responsividade: em telas pequenas, coloca um embaixo do outro */
+@media (max-width: 768px) {
+    .topo-jogo {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+    }
+}
+
 .jogadores-info {
     display: flex;            /* Ativa o modo horizontal */
     align-items: center;      /* Alinha os itens verticalmente ao centro */
