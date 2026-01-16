@@ -55,6 +55,17 @@ async function jogar(idJogo = null, nomeJogador1, nomeJogador2, posicao) {
         atualizarListaJogos();
         atualizarRanking();
 
+        const docVes = document.getElementById("vez-jogador");
+        if (jogoAtual.status === "decorrer") {
+            const vezJogador =
+                jogoAtual.vezJogar == 1
+                    ? jogoAtual.jogador1.nome
+                    : jogoAtual.jogador2.nome;
+            docVes.innerText = `${vezJogador}`;
+        } else {
+            docVes.innerText = `Finalizado`;
+        }
+
         if (jogoAtual.status != "decorrer") {
             // Pequeno delay para a animação da última peça terminar
             setTimeout(
@@ -84,6 +95,21 @@ function atualizarTabuleiro(jogadas) {
     document
         .querySelectorAll(".tabuleiro .celula")
         .forEach((c) => (c.textContent = ""));
+
+    const docVes = document.getElementById("vez-jogador");
+    if (!jogoAtual) {
+        docVes.innerText = `X`;
+        i1.disabled = false;
+        i2.disabled = false;
+    } else if (jogoAtual?.status == "decorrer") {
+        const vezJogador =
+            jogoAtual?.vezJogar === 1
+                ? jogoAtual?.jogador1?.nome
+                : jogoAtual?.jogador2?.nome;
+        docVes.innerText = `${vezJogador}`;
+    } else {
+        docVes.innerText = `Finalizado`;
+    }
 
     jogadas.forEach((j) => {
         const celula = document.querySelector(

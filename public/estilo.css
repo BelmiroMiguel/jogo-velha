@@ -45,7 +45,7 @@ body {
 
 .status-turno {
     position: fixed;          /* 'fixed' mantém no lugar mesmo se rolar a página */
-    right: 100px;              /* Cola na direita com 20px de distância da borda */
+    right: 60px;              /* Cola na direita com 20px de distância da borda */
     top: 50%;                 /* Move o topo para o meio da tela */
     transform: translateY(-50%); /* Ajuste fino para o centro real (sobe metade da sua própria altura) */
 
@@ -143,12 +143,11 @@ header {
 
 /* --- PROPORÇÕES DO PAINEL DIREITO --- */
 #ranking-section {
-    height: 25%; /* 25% de altura */
-    min-height: calc(100vh - 75%);
+    height: 390px;
 }
 
 #jogos-section {
-    height: calc(100vh - 33%); /* 75% de altura */
+    height: calc(100vh - 530px); /* 75% de altura */
 }
 
 /* --- LISTAGENS BONITAS --- */
@@ -338,6 +337,7 @@ input[type="text"]:focus {
     border-radius: 8px;
     cursor: pointer;
     transition: var(--transition);
+    float: left !important;
 }
 
 #replay-controls button:hover {
