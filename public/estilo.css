@@ -1,13 +1,33 @@
 /* --- VARIÁVEIS E CONFIGURAÇÃO BASE --- */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap');
+
 :root {
-    --bg-dark: #0b0e14;
-    --card-bg: rgba(255, 255, 255, 0.05);
-    --primary: #00f2ff;
-    --secondary: #7000ff;
-    --accent: #ff0055;
-    --text-main: #e0e6ed;
-    --text-dim: #94a3b8;
-    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    /* Paleta Light Florestal */
+    --forest-green: #2d6a4f;      /* Verde folha densa */
+    --leaf-light: #0c5332;       /* Verde broto */
+    --sky-clear: #4a88c2;        /* Azul céu clarinho */
+    --sky-deep: #4886e4;         /* Azul horizonte */
+    --stone-grey: #878a86;       /* Cinza chão de trilha */
+    --dirt-path: #39526b;        /* Branco levemente acinzentado */
+
+    /* Cores de Estado */
+    --primary: var(--forest-green);
+    --secondary: var(--sky-deep);
+    --accent: #d90429;           /* Vermelho fruta/bagas (para erros) */
+    --text-main: #1b4332;        /* Verde quase preto para leitura */
+    --text-dim: #555555;
+
+    --card-bg: rgba(255, 255, 255, 0.75); /* Vidro claro */
+    --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    --glow-primary: 0 8px 20px rgba(45, 106, 79, 0.15);
+
+
+    --cor-terra: #8d6e63;
+    --cor-grama: #4caf50;
+    --cor-folha: #2e7d32;
+    --cor-areia: #f5f5dc;
+    --cor-madeira: #5d4037;
+    --bg-light-floresta: rgba(240, 245, 240, 0.85);
 }
 
 * {
@@ -17,12 +37,13 @@
 }
 
 body {
-    background: radial-gradient(circle at center, #1a1a2e 0%, var(--bg-dark) 100%);
+    /* Gradiente Vertical: Do céu (topo) para o chão (base) */
+    background: linear-gradient(180deg, var(--sky-clear) 0%, #e9ecef 60%, var(--stone-grey) 100%);
     color: var(--text-main);
     font-family: 'Rajdhani', sans-serif;
+    min-height: 100vh;
     overflow-x: hidden;
 }
-
 
 .jogadores-info {
     display: flex;            /* Ativa o modo horizontal */
@@ -44,25 +65,20 @@ body {
 }
 
 .status-turno {
-    position: fixed;          /* 'fixed' mantém no lugar mesmo se rolar a página */
-    right: 60px;              /* Cola na direita com 20px de distância da borda */
-    top: 50%;                 /* Move o topo para o meio da tela */
-    transform: translateY(-50%); /* Ajuste fino para o centro real (sobe metade da sua própria altura) */
-
-    /* Estilização Customizada */
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
     display: flex;
-    flex-direction: column;   /* Coloquei em coluna para ficar elegante na lateral */
+    flex-direction: column;
     align-items: center;
-    gap: 5px;
-    padding: 15px;
-    background: rgba(44, 62, 80, 0.9); /* Fundo levemente transparente */
-    color: white;
-    border-radius: 12px;
-    border-right: 5px solid #f1c40f; /* Detalhe colorido na borda direita */
-    box-shadow: -4px 0 15px rgba(0,0,0,0.3);
-    font-family: sans-serif;
-    min-width: 80px;
-    z-index: 1000;            /* Garante que fique acima de tudo */
+    padding: 20px;
+    background: white;
+    border-radius: 50px;
+    border: 2px solid var(--leaf-light);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    animation: float 4s ease-in-out infinite;
 }
 
 .status-turno span {
@@ -72,11 +88,18 @@ body {
     opacity: 0.8;
 }
 
-#vez-jogador {
-    font-size: 2rem;
-    color: #f1c40f;
-    line-height: 1;
+@keyframes float {
+    0%, 100% { transform: translateY(-50%) translateY(0px); }
+    50% { transform: translateY(-50%) translateY(-15px); }
 }
+
+#vez-jogador {
+    font-size: 2.1rem;
+    color: var(--primary);
+    text-shadow: 0 0 15px var(--primary);
+    font-family: 'Orbitron';
+}
+
 
 /* --- SCROLLBAR OVERRIDE --- */
 .ranking-list::-webkit-scrollbar,
@@ -116,7 +139,7 @@ header {
     max-width: 1400px;
     margin: 0 auto 0 auto;
     padding: 0 20px 20px 20px;
-    margin-top: 35px;
+    padding-top: 35px;
 }
 
 /* --- PAINÉIS --- */
@@ -134,21 +157,56 @@ header {
 .glass-card {
     background: var(--card-bg);
     backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 24px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    transition: var(--transition);
+}
+
+.glass-card:hover {
+    box-shadow: 0 15px 40px rgba(45, 106, 79, 0.1);
+    transform: translateY(-3px);
+}
+
+/* Ajuste nos inputs para tema claro */
+input[type="text"] {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid var(--stone-grey);
+    color: var(--text-main);
+    font-weight: 500;
 }
 
 /* --- PROPORÇÕES DO PAINEL DIREITO --- */
 #ranking-section {
     height: 390px;
+    overflow: auto;
 }
 
 #jogos-section {
     height: calc(100vh - 490px); /* 75% de altura */
+    overflow: auto;
+}
+
+/* --- CUSTOMIZAÇÃO DA BARRA DE ROLAGEM --- */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 10px;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary);
 }
 
 /* --- LISTAGENS BONITAS --- */
@@ -162,7 +220,7 @@ header {
 }
 
 .ranking-list li, .jogos-list li {
-    background: rgba(255, 255, 255, 0.02);
+    background: rgba(218, 216, 219, 0.164);
     margin-bottom: 10px;
     padding: 12px 15px;
     border-radius: 10px;
@@ -213,56 +271,58 @@ header {
 }
 
 .celula {
-    width: 120px;
-    height: 120px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 2px solid rgba(0, 242, 255, 0.1);
-    border-radius: 15px;
+    width: 110px;
+    height: 110px;
+    background: #ffffff;
+    border: 2px solid var(--sky-clear);
+    border-radius: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 3rem;
-    font-family: 'Orbitron', sans-serif;
-    cursor: pointer;
+    font-family: 'Orbitron';
+    color: var(--forest-green); /* X e O em verde floresta */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
     transition: var(--transition);
 }
 
 .celula:hover {
-    border-color: var(--primary);
-    background: rgba(0, 242, 255, 0.05);
-    box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
+    background: var(--sky-clear);
+    border-color: var(--sky-deep);
     transform: scale(1.05);
 }
 
+
 /* --- BOTÕES E INPUTS --- */
 .btn-primary {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    background: linear-gradient(135deg, var(--forest-green), var(--leaf-light));
     border: none;
     color: white;
     padding: 12px 24px;
-    border-radius: 8px;
+    border-radius: 12px;
     font-family: 'Orbitron';
-    font-weight: bold;
     cursor: pointer;
-    transition: var(--transition);
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(45, 106, 79, 0.3);
 }
 
 .btn-primary:hover {
-    filter: brightness(1.2);
-    box-shadow: 0 0 15px var(--primary);
     transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(45, 106, 79, 0.4);
+    filter: brightness(1.1);
 }
 
 input[type="text"] {
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(17, 124, 143, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    color: white;
+    color: rgb(7, 77, 17);
     padding: 10px;
     border-radius: 6px;
     font-family: 'Rajdhani';
     width: 100%;
+    font-weight: bold;
+    transition: var(--transition);
+
+
 }
 
 input[type="text"]:focus {
@@ -301,9 +361,9 @@ input[type="text"]:focus {
 
 
 .vencedor {
-    background: rgba(0, 255, 0, 0.15) !important;
+    background: rgba(3, 224, 3, 0.301) !important;
     border-left-color: #00ff00 !important;
-    color: #00ff00 !important;
+    color: #023502b0 !important;
     padding: 1px 8px !important;
     border-radius: 10px !important;
 }
@@ -355,7 +415,7 @@ input[type="text"]:focus {
     gap: 8px;
     justify-content: center;
     padding: 15px;
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(31, 30, 30, 0.3);
     border-radius: 12px;
     width: fit-content;
     margin: 0 auto;
@@ -364,7 +424,7 @@ input[type="text"]:focus {
 .celula-mini {
     width: 50px;
     height: 50px;
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(2, 89, 104, 0.466);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 6px;
     display: flex;
@@ -441,7 +501,7 @@ input[type="text"]:focus {
     grid-template-columns: repeat(3, 50px);
     gap: 8px;
     padding: 15px;
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(71, 95, 110, 0.3);
     border-radius: 12px;
     width: fit-content;
 }
@@ -453,6 +513,138 @@ input[type="text"]:focus {
     transform: translateX(5px); /* Move levemente para a direita no hover */
 }
 
+/* Container de Informações à Direita */
+.replay-info {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    min-width: 140px;
+    text-align: center;
+}
+
+.info-box {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(0, 242, 255, 0.1);
+    padding: 10px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.info-box .label {
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    color: var(--primary); /* Ou a cor ciano que você está usando */
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
+
+.info-box .valor {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: white;
+}
+
+.info-box small {
+    font-size: 0.6rem;
+    opacity: 0.6;
+}
+
+/* Estilo para o Vencedor/Empate */
+.valor-resultado {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.9rem;
+    color: #fff;
+    text-shadow: 0 0 5px rgba(0, 242, 255, 0.5);
+    margin-top: 5px;
+    font-weight: bold;
+}
+
+/* Se for "Empate", você pode mudar a cor via JS ou classe */
+.resultado-empate {
+    color: #ffcc00 !important;
+}
+
+.resultado-vitoria {
+    color: #00ff88 !important;
+    text-transform: uppercase;
+}
+
+/* Ajuste no wrapper para garantir que tudo caiba bem em telas menores */
+@media (max-width: 600px) {
+    .replay-wrapper {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    #replay-controls {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .replay-info {
+        flex-direction: row;
+        justify-content: center;
+    }
+}
+
+
+
+.info-box-terra {
+    background: white;
+    padding: 15px 20px;
+    border-radius: 15px;
+    border-left: 6px solid var(--cor-grama);
+    box-shadow: 4px 4px 15px rgba(0,0,0,0.05);
+    text-align: left;
+}
+
+.label-terra {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--cor-terra);
+    font-weight: 800;
+}
+
+.valor-grande {
+    font-size: 2.5rem; /* Bem grande como pedido */
+    font-family: 'Poppins', sans-serif;
+    color: var(--cor-madeira);
+    margin: 5px 0;
+    font-weight: 900;
+}
+
+.divisor {
+    color: var(--cor-grama);
+    font-size: 1.5rem;
+    margin: 0 5px;
+}
+
+.sub-label {
+    font-size: 0.8rem;
+    color: #999;
+}
+
+.resultado-destaque {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--cor-folha);
+    margin-top: 10px;
+}
+
+/* Cores dinâmicas para o resultado */
+.vitoria-texto { color: #2e7d32; }
+.empate-texto { color: #f57c00; }
+
+
+/* ###############################*/
+/* ###############################*/
+/* ###############################*/
 
 
 /* Overlay que escurece e desfoca o fundo */
@@ -470,18 +662,14 @@ input[type="text"]:focus {
     z-index: 9999;
 }
 
-/* O cartão do alerta */
+/* Base para ambos os modais */
 .modal-content {
-    background: rgba(25, 25, 25, 0.9);
-    border: 2px solid var(--primary, #00f2ff);
+    background: rgba(5, 10, 15, 0.95);
+    border-radius: 24px;
     padding: 40px;
-    border-radius: 20px;
     text-align: center;
-    max-width: 400px;
-    width: 90%;
-    box-shadow: 0 0 30px rgba(0, 242, 255, 0.2);
-    transform: scale(0.7);
-    transition: transform 0.3s ease;
+    border: 1px solid var(--primary);
+    box-shadow: 0 0 50px rgba(0, 255, 170, 0.15);
 }
 
 /* Quando o modal aparece, ele cresce */
@@ -531,10 +719,14 @@ input[type="text"]:focus {
 
 
 
-/* Estilo específico para o card de Erro */
+/* Customização para o de ERRO */
 .error-card {
-    border: 2px solid #ff4d4d !important; /* Vermelho vibrante */
-    box-shadow: 0 0 30px rgba(255, 77, 77, 0.3) !important;
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 50px rgba(255, 62, 62, 0.2) !important;
+}
+.error-card #modal-erro-titulo {
+    color: var(--accent);
+    text-shadow: 0 0 10px rgba(255, 62, 62, 0.5);
 }
 
 /* Animação de tremor quando o erro aparece */
@@ -549,29 +741,24 @@ input[type="text"]:focus {
     75% { transform: translateX(-5px); }
 }
 
-/* Título e ícone de erro */
-#modal-erro-titulo {
-    color: #ff4d4d;
-    font-family: 'Orbitron', sans-serif;
-}
+
 
 /* Botão de erro customizado */
 .btn-error {
-    background: #ff4d4d;
-    color: white;
-    border: none;
-    padding: 12px 30px;
-    font-size: 1rem;
-    font-weight: bold;
-    border-radius: 50px;
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 10px 25px;
+    border-radius: 8px;
     cursor: pointer;
-    text-transform: uppercase;
-    transition: all 0.3s;
-    box-shadow: 0 4px 15px rgba(255, 77, 77, 0.4);
+    font-family: 'Orbitron';
+    transition: var(--transition);
 }
 
 .btn-error:hover {
-    background: #ff1a1a;
-    transform: scale(1.05);
-    box-shadow: 0 0 20px #ff4d4d;
+    background: var(--accent);
+    color: white;
+    box-shadow: 0 0 20px var(--accent);
 }
+
+

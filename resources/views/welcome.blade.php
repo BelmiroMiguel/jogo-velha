@@ -26,7 +26,7 @@
                 <div class="jogadores-info">
                     <div class="jogador p1">
                         <p class="">X</p>
-                        <input type="text" id="nomeJogador1" placeholder="Player 1">
+                        <input type="text" id="nomeJogador1" placeholder="Player X">
                         <div class="stats-mini">
                             Vitórias: <strong id="vitorias1">0</strong>
                         </div>
@@ -34,7 +34,7 @@
                     <div class="vs-divider">VS</div>
                     <div class="jogador p2">
                         <p class="">O</p>
-                        <input type="text" id="nomeJogador2" placeholder="Player 2">
+                        <input type="text" id="nomeJogador2" placeholder="Player O">
                         <div class="stats-mini">
                             Vitórias: <strong id="vitorias2">0</strong>
                         </div>
@@ -56,7 +56,8 @@
             <section id="replay-section" class="glass-card mt-20">
                 <h2>🎞️ Replay da Partida</h2>
 
-                <div class="replay-wrapper"> <!-- Novo container -->
+                <div class="replay-wrapper">
+                    <!-- Controles (Esquerda) -->
                     <div id="replay-controls">
                         <button id="replay-voltar" title="Voltar">
                             <span>⏮️</span> <small>Voltar</small>
@@ -72,10 +73,28 @@
                         </button>
                     </div>
 
+                    <!-- Tabuleiro (Centro) -->
                     <div id="replay-tabuleiro" class="tabuleiro-mini">
                         @for ($i = 0; $i < 9; $i++)
                             <div class="celula-mini" data-posicao="{{ $i }}"></div>
                         @endfor
+                    </div>
+
+                    <!-- Informações (Direita) -->
+                    <div class="replay-info">
+                        <div class="info-box">
+                            <span class="label">Progresso</span>
+                            <div class="valor">
+                                <span id="passo-atual">0</span> / <span id="total-passos"
+                                    style="color: rgb(7, 61, 0)">0</span>
+                            </div>
+                            <small style="font-size: 0.8rem">Passos</small>
+                        </div>
+
+                        <div class="info-box status-vitoria">
+                            <span class="label">Resultado</span>
+                            <div id="replay-resultado" class="valor-resultado">-</div>
+                        </div>
                     </div>
                 </div>
             </section>

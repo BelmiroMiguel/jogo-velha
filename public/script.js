@@ -16,22 +16,21 @@ let jogoAtual = null;
 
 // Botão Novo Jogo
 document.getElementById("btn-novo-jogo").addEventListener("click", () => {
+    // Resetar tudo e jogoAtual
     jogoAtual = null;
+
     document.getElementById("nomeJogador1").disabled = false;
     document.getElementById("nomeJogador2").disabled = false;
     document.getElementById("nomeJogador1").value = "";
     document.getElementById("nomeJogador2").value = "";
+    document.getElementById("vitorias1").innerText = "0";
+    document.getElementById("vitorias2").innerText = "0";
+    document.getElementById("vez-jogador").innerText = "X";
+
     document
         .querySelectorAll(".tabuleiro .celula")
         .forEach((c) => (c.textContent = ""));
     console.log("Sistema resetado para novo jogo.");
-
-    // Resetar tudo e jogoAtual
-    jogoAtual = null;
-    atualizarTabuleiro([]);
-    atualizarListaJogos();
-    atualizarRanking();
-    atualizarReplayTabuleiro();
 });
 
 async function jogar(idJogo = null, nomeJogador1, nomeJogador2, posicao) {
@@ -54,18 +53,16 @@ async function jogar(idJogo = null, nomeJogador1, nomeJogador2, posicao) {
         atualizarTabuleiro(data.jogo.jogadas);
         atualizarListaJogos();
         atualizarRanking();
+        iniciarReplay(jogoAtual);
 
         const docVes = document.getElementById("vez-jogador");
-        if (jogoAtual.status === "decorrer") {
+        if (jogoAtual.status == "decorrer") {
             const vezJogador =
                 jogoAtual.vezJogar == 1
                     ? jogoAtual.jogador1.nome
                     : jogoAtual.jogador2.nome;
             docVes.innerText = `${vezJogador}`;
-        } else {
-            docVes.innerText = `Finalizado`;
         }
-
         if (jogoAtual.status != "decorrer") {
             // Pequeno delay para a animação da última peça terminar
             setTimeout(() => {
@@ -74,6 +71,16 @@ async function jogar(idJogo = null, nomeJogador1, nomeJogador2, posicao) {
                     jogoAtual.jogadorVitoria ? jogoAtual.jogadorVitoria : null
                 );
             }, 300);
+
+            docVes.innerText = `Finalizado`;
+            // Limpar tabuleiro após breve delay
+
+            setTimeout(() => {
+                jogoAtual = null;
+                document
+                    .querySelectorAll(".tabuleiro .celula")
+                    .forEach((c) => (c.textContent = ""));
+            }, 3300);
         }
     } catch (err) {
         mostrarErro(err.message);
@@ -134,7 +141,7 @@ document.querySelectorAll(".tabuleiro .celula").forEach((c) => {
         const n1 = document.getElementById("nomeJogador1").value;
         const n2 = document.getElementById("nomeJogador2").value;
 
-        if (!n1 || !n2) return mostrarErro("Insira os nomes dos jogadores!");
+        //if (!n1 || !n2) return mostrarErro("Insira os nomes dos jogadores!");
 
         jogar(jogoAtual?.idJogo, n1, n2, pos);
     });
@@ -217,6 +224,8 @@ async function atualizarListaJogos() {
             iniciarReplay(jogos[index]);
         });
     });
+
+    // scrolar a lista ao topo com animacao
 }
 
 // ==========================
@@ -243,6 +252,26 @@ function iniciarReplay(jogo) {
     replayIndex = 0;
     atualizarReplayTabuleiro();
     pausarReplay();
+
+    const docresultadoReplay = document.getElementById("replay-resultado");
+    docresultadoReplay.classList.remove("vitoria-texto");
+    docresultadoReplay.classList.remove("empate-texto");
+    if (jogo.status != "decorrer") {
+        if (jogo.jogadorVitoria) {
+            docresultadoReplay.innerHTML = `Vencedor: <strong style="color: #00f2ff">${jogo.jogadorVitoria.nome}</strong>`;
+            docresultadoReplay.classList.add("vitoria-texto");
+        } else {
+            docresultadoReplay.innerText = "Empate!";
+            docresultadoReplay.classList.add("empate-texto");
+        }
+    } else {
+        docresultadoReplay.innerText = "Jogo em andamento";
+    }
+
+    const docpassoatual = document.getElementById("passo-atual");
+    docpassoatual.innerText = replayIndex + 1;
+    const doctotalpassos = document.getElementById("total-passos");
+    doctotalpassos.innerText = jogo.jogadas.length;
 }
 
 function atualizarReplayTabuleiro() {
@@ -273,12 +302,16 @@ function avancarReplay() {
     if (replayIndex < replayJogadas.length - 1) {
         replayIndex++;
         atualizarReplayTabuleiro();
+        const docpassoatual = document.getElementById("passo-atual");
+        docpassoatual.innerText = replayIndex + 1;
     }
 }
 function voltarReplay() {
     if (replayIndex > 0) {
         replayIndex--;
         atualizarReplayTabuleiro();
+        const docpassoatual = document.getElementById("passo-atual");
+        docpassoatual.innerText = replayIndex + 1;
     }
 }
 function pausarReplay() {
@@ -291,6 +324,8 @@ function continuarReplay() {
         if (replayIndex < replayJogadas.length - 1) {
             replayIndex++;
             atualizarReplayTabuleiro();
+            const docpassoatual = document.getElementById("passo-atual");
+            docpassoatual.innerText = replayIndex + 1;
         } else {
             pausarReplay();
         }

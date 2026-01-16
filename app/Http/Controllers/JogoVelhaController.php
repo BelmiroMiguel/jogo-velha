@@ -39,8 +39,8 @@ class JogoVelhaController extends Controller
     {
         try {
             $idJogo = $request->input('idJogo'); // pode ser null
-            $nome1 = $request->input('nomeJogador1') ?? 'X';
-            $nome2 = $request->input('nomeJogador2') ?? 'O';
+            $nome1 = $request->input('nomeJogador1') ?? 'Player X';
+            $nome2 = $request->input('nomeJogador2') ?? 'Player O';
             $vezJogar = $request->input('vezJogar'); // indica qual jogador está jogando (1 ou 2), apenas no momento de criar o jogo, depois o sistema controla
             $posicao = $request->input('posicao');
 
@@ -60,8 +60,8 @@ class JogoVelhaController extends Controller
                     return response()->json(['error' => 'Nomes dos jogadores são necessários para criar um jogo'], 400);
                 }
 
-                $jogador1 = $this->getOrCreateJogador($nome1 ?? 'X');
-                $jogador2 = $this->getOrCreateJogador($nome2 ?? 'O');
+                $jogador1 = $this->getOrCreateJogador($nome1 ?? 'Player X');
+                $jogador2 = $this->getOrCreateJogador($nome2 ?? 'Player O');
 
                 if ($jogador1->idJogador === $jogador2->idJogador) {
                     return response()->json(['error' => 'Jogadores devem ser diferentes'], 400);
@@ -80,6 +80,11 @@ class JogoVelhaController extends Controller
                     return response()->json(['error' => 'Jogo já finalizado.'], 400);
                 }
 
+                // Verifica se posição já ocupada
+                if (Jogada::where('idJogo', $jogo->idJogo)->where('posicao', $posicao)->exists()) {
+                    return response()->json(['error' => 'Posição já ocupada.'], 400);
+                }
+
                 // Atualiza a vez de jogar para o próximo jogador
                 $jogo->vezJogar = $jogo->vezJogar == 1 ? '2' : '1';
                 $jogo->save();
@@ -87,7 +92,7 @@ class JogoVelhaController extends Controller
 
             // Verifica se posição já ocupada
             if (Jogada::where('idJogo', $jogo->idJogo)->where('posicao', $posicao)->exists()) {
-                return response()->json(['error' => 'Posição já ocupada. Jogo: ' . $jogo->idJogo], 400);
+                return response()->json(['error' => 'Posição já ocupada.'], 400);
             }
 
             $jogada = Jogada::create([

@@ -22,7 +22,7 @@ return new class extends Migration
         });
 
         DB::table('tb_jogador')->insert([
-            'nome' => 'adalgisa',
+            'nome' => 'Ada',
             'dataCadastro' => now(),
             'qtdVitorias' => 0,
             'qtdEmpates' => 0,
@@ -30,7 +30,15 @@ return new class extends Migration
         ]);
 
         DB::table('tb_jogador')->insert([
-            'nome' => 'miguel',
+            'nome' => 'Player X',
+            'dataCadastro' => now(),
+            'qtdVitorias' => 0,
+            'qtdEmpates' => 0,
+            'qtdDerrotas' => 0,
+        ]);
+
+        DB::table('tb_jogador')->insert([
+            'nome' => 'Player Y',
             'dataCadastro' => now(),
             'qtdVitorias' => 0,
             'qtdEmpates' => 0,
