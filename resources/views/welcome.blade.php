@@ -100,6 +100,24 @@
         </div>
     </main>
 
+    <div id="modal-alerta" class="modal-overlay">
+        <div class="modal-content glass-card">
+            <div class="modal-icon">🏆</div>
+            <h2 id="modal-titulo">FIM DE JOGO</h2>
+            <p id="modal-mensagem"></p>
+            <button id="btn-continuar" class="btn-glow">Continuar</button>
+        </div>
+    </div>
+
+    <div id="modal-erro" class="modal-overlay">
+        <div class="modal-content error-card">
+            <div class="modal-icon">🚫</div>
+            <h2 id="modal-erro-titulo">ERRO</h2>
+            <p id="modal-erro-mensagem"></p>
+            <button id="btn-erro-fechar" class="btn-error">Entendido</button>
+        </div>
+    </div>
+
     <script src="{{ asset('script.js') }}"></script>
 </body>
 

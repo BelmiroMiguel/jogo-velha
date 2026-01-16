@@ -12,7 +12,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-         Schema::create('tb_jogador', function (Blueprint $table) {
+        Schema::create('tb_jogador', function (Blueprint $table) {
             $table->bigIncrements('idJogador');
             $table->string('nome');
             $table->dateTime('dataCadastro')->default(DB::raw('CURRENT_TIMESTAMP'));
@@ -22,7 +22,7 @@ return new class extends Migration
         });
 
         DB::table('tb_jogador')->insert([
-            'nome' => 'X',
+            'nome' => 'adalgisa',
             'dataCadastro' => now(),
             'qtdVitorias' => 0,
             'qtdEmpates' => 0,
@@ -30,7 +30,7 @@ return new class extends Migration
         ]);
 
         DB::table('tb_jogador')->insert([
-            'nome' => 'O',
+            'nome' => 'miguel',
             'dataCadastro' => now(),
             'qtdVitorias' => 0,
             'qtdEmpates' => 0,

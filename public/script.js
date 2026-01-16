@@ -68,21 +68,15 @@ async function jogar(idJogo = null, nomeJogador1, nomeJogador2, posicao) {
 
         if (jogoAtual.status != "decorrer") {
             // Pequeno delay para a animação da última peça terminar
-            setTimeout(
-                () =>
-                    alert(
-                        `FIM DE JOGO: ${jogoAtual.status.toUpperCase()} ${
-                            jogoAtual.jogadorVitoria
-                                ? " - Vencedor: " +
-                                  jogoAtual.jogadorVitoria.nome
-                                : " - Empate!"
-                        }`
-                    ),
-                300
-            );
+            setTimeout(() => {
+                mostrarAlerta(
+                    jogoAtual.status,
+                    jogoAtual.jogadorVitoria ? jogoAtual.jogadorVitoria : null
+                );
+            }, 300);
         }
     } catch (err) {
-        alert(err.message);
+        mostrarErro(err.message);
     }
 }
 
@@ -140,7 +134,7 @@ document.querySelectorAll(".tabuleiro .celula").forEach((c) => {
         const n1 = document.getElementById("nomeJogador1").value;
         const n2 = document.getElementById("nomeJogador2").value;
 
-        if (!n1 || !n2) return alert("Insira os nomes dos jogadores!");
+        if (!n1 || !n2) return mostrarErro("Insira os nomes dos jogadores!");
 
         jogar(jogoAtual?.idJogo, n1, n2, pos);
     });
@@ -316,6 +310,59 @@ document
 document
     .getElementById("replay-continuar")
     .addEventListener("click", continuarReplay);
+
+// Função para mostrar o alerta customizado
+function mostrarAlerta(status, vencedor) {
+    const modal = document.getElementById("modal-alerta");
+    const titulo = document.getElementById("modal-titulo");
+    const mensagem = document.getElementById("modal-mensagem");
+    const icone = document.querySelector(".modal-icon");
+
+    // Define o texto baseado no resultado
+    titulo.innerText = status.toUpperCase();
+
+    if (vencedor) {
+        mensagem.innerHTML = `Vencedor: <strong style="color: #00f2ff">${vencedor.nome}</strong>`;
+        icone.innerText = "🏆";
+    } else {
+        mensagem.innerText = "A partida terminou em empate!";
+        icone.innerText = "🤝";
+    }
+
+    // Mostra o modal
+    modal.classList.add("active");
+}
+
+// Evento para fechar o modal
+document.getElementById("btn-continuar").addEventListener("click", function () {
+    const modal = document.getElementById("modal-alerta");
+    modal.classList.remove("active");
+
+    // Opcional: Reiniciar o jogo automaticamente ao clicar em continuar
+    // reiniciarJogo();
+});
+
+/**
+ * Exibe o alerta de erro customizado
+ * @param {string} mensagem - A mensagem de erro que será exibida
+ */
+function mostrarErro(mensagem) {
+    const modalErro = document.getElementById("modal-erro");
+    const campoMensagem = document.getElementById("modal-erro-mensagem");
+
+    // Define a mensagem recebida
+    campoMensagem.innerText = mensagem;
+
+    // Exibe o modal
+    modalErro.classList.add("active");
+}
+
+// Evento para fechar o modal de erro
+document
+    .getElementById("btn-erro-fechar")
+    .addEventListener("click", function () {
+        document.getElementById("modal-erro").classList.remove("active");
+    });
 
 // ==========================
 // INICIALIZAÇÃO
