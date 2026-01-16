@@ -23,6 +23,61 @@ body {
     overflow-x: hidden;
 }
 
+
+.jogadores-info {
+    display: flex;            /* Ativa o modo horizontal */
+    align-items: center;      /* Alinha os itens verticalmente ao centro */
+    justify-content: center;  /* Centraliza o conjunto no meio da tela */
+    gap: 20px;                /* Espaçamento entre os jogadores e o "VS" */
+    margin-bottom: 15px;
+}
+
+.jogador {
+    display: flex;
+    flex-direction: column;   /* Mantém o input e as vitórias um em cima do outro */
+    align-items: center;      /* Centraliza o conteúdo dentro de cada jogador */
+}
+
+.vs-divider {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.status-turno {
+    position: fixed;          /* 'fixed' mantém no lugar mesmo se rolar a página */
+    right: 100px;              /* Cola na direita com 20px de distância da borda */
+    top: 50%;                 /* Move o topo para o meio da tela */
+    transform: translateY(-50%); /* Ajuste fino para o centro real (sobe metade da sua própria altura) */
+
+    /* Estilização Customizada */
+    display: flex;
+    flex-direction: column;   /* Coloquei em coluna para ficar elegante na lateral */
+    align-items: center;
+    gap: 5px;
+    padding: 15px;
+    background: rgba(44, 62, 80, 0.9); /* Fundo levemente transparente */
+    color: white;
+    border-radius: 12px;
+    border-right: 5px solid #f1c40f; /* Detalhe colorido na borda direita */
+    box-shadow: -4px 0 15px rgba(0,0,0,0.3);
+    font-family: sans-serif;
+    min-width: 80px;
+    z-index: 1000;            /* Garante que fique acima de tudo */
+}
+
+.status-turno span {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.8;
+}
+
+#vez-jogador {
+    font-size: 2rem;
+    color: #f1c40f;
+    line-height: 1;
+}
+
 /* --- SCROLLBAR OVERRIDE --- */
 .ranking-list::-webkit-scrollbar,
 .jogos-list::-webkit-scrollbar {

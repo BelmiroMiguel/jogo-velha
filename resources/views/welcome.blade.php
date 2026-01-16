@@ -32,18 +32,25 @@
 
                 <div class="jogadores-info">
                     <div class="jogador p1">
-                        <input type="text" id="nomeJogador1" placeholder="Player X">
+                        <p class="">X</p>
+                        <input type="text" id="nomeJogador1" placeholder="Player 1">
                         <div class="stats-mini">
                             Vitórias: <strong id="vitorias1">0</strong>
                         </div>
                     </div>
                     <div class="vs-divider">VS</div>
                     <div class="jogador p2">
-                        <input type="text" id="nomeJogador2" placeholder="Player O">
+                        <p class="">O</p>
+                        <input type="text" id="nomeJogador2" placeholder="Player 2">
                         <div class="stats-mini">
                             Vitórias: <strong id="vitorias2">0</strong>
                         </div>
                     </div>
+                </div>
+                
+                <div class="status-turno">
+                    <span>Vez de:</span>
+                    <strong id="vez-jogador">X</strong>
                 </div>
 
                 <div id="tabuleiro" class="tabuleiro">
