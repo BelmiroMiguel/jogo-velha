@@ -69,7 +69,15 @@ async function jogar(idJogo = null, nomeJogador1, nomeJogador2, posicao) {
         if (jogoAtual.status != "decorrer") {
             // Pequeno delay para a animação da última peça terminar
             setTimeout(
-                () => alert(`FIM DE JOGO: ${jogoAtual.status.toUpperCase()}`),
+                () =>
+                    alert(
+                        `FIM DE JOGO: ${jogoAtual.status.toUpperCase()} ${
+                            jogoAtual.jogadorVitoria
+                                ? " - Vencedor: " +
+                                  jogoAtual.jogadorVitoria.nome
+                                : " - Empate!"
+                        }`
+                    ),
                 300
             );
         }
@@ -150,9 +158,19 @@ async function atualizarRanking() {
             <span class="jogador-info"><strong>#${index + 1}</strong> ${
                 j.nome
             }</span>
-            <span class="v-count" style="display: flex; align-items: center; gap: 5px;">
-                <span style="font-size:1.4rem">${j.qtdVitorias}</span>
-                <span style=" ">🏆</span>
+            <span class="stats" style="display: flex; align-items: center; gap: 10px;">
+                <span class="v-count" style="display: flex; align-items: center; gap: 1px;">
+                    <span style="font-size:1.4rem">${j.qtdVitorias}</span>
+                    <span style="font-size:0.8rem">🏆</span>
+                </span>
+                <span class="d-count" style="display: flex; align-items: center; gap: 1px;">
+                    <span style="font-size:1.4rem">${j.qtdDerrotas}</span>
+                    <span style="font-size:0.8rem">❌</span>
+                </span>
+                <span class="e-count" style="display: flex; align-items: center; gap: 1px;">
+                    <span style="font-size:1.4rem">${j.qtdEmpates}</span>
+                    <span style="font-size:0.8rem">🤝</span>
+                </span>
             </span>
         </li>
     `

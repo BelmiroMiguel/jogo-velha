@@ -114,8 +114,9 @@ header {
     grid-template-columns: 1fr 380px;
     gap: 20px;
     max-width: 1400px;
-    margin: 0 auto;
+    margin: 0 auto 0 auto;
     padding: 0 20px 20px 20px;
+    margin-top: 35px;
 }
 
 /* --- PAINÉIS --- */
@@ -147,7 +148,7 @@ header {
 }
 
 #jogos-section {
-    height: calc(100vh - 530px); /* 75% de altura */
+    height: calc(100vh - 490px); /* 75% de altura */
 }
 
 /* --- LISTAGENS BONITAS --- */
@@ -312,6 +313,7 @@ input[type="text"]:focus {
 /* --- ESTILIZAÇÃO DO REPLAY --- */
 
 /* Ajuste para a margem que não existia no CSS puro */
+
 .mt-20 {
     margin-top: 20px;
 }
@@ -390,4 +392,63 @@ input[type="text"]:focus {
 .celula-mini:not(:empty) {
     background: rgba(255, 255, 255, 0.1);
     color: var(--primary);
+}
+
+/* Container que coloca controles e tabuleiro lado a lado */
+.replay-wrapper {
+    display: flex;
+    align-items: center; /* Alinha verticalmente ao centro */
+    justify-content: center; /* Centraliza o conjunto no card */
+    gap: 30px; /* Espaço entre controles e tabuleiro */
+    margin-top: 15px;
+}
+
+#replay-controls {
+    display: flex;
+    flex-direction: column; /* Coloca os botões um em cima do outro */
+    gap: 10px;
+}
+
+#replay-controls button {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Alinha ícone e texto à esquerda */
+    gap: 10px;
+    width: 120px; /* Largura fixa para os botões ficarem iguais */
+    padding: 8px 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    /* Removido o float:left que quebrava o layout */
+}
+
+#replay-controls button small {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#replay-controls button span {
+    font-size: 1.1rem;
+}
+
+/* O TABULEIRO MINI (Removido o margin: 0 auto para não brigar com o flex) */
+.tabuleiro-mini {
+    display: grid;
+    grid-template-columns: repeat(3, 50px);
+    gap: 8px;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    width: fit-content;
+}
+
+/* Efeito Hover nos botões */
+#replay-controls button:hover {
+    background: rgba(0, 242, 255, 0.2);
+    border-color: #00f2ff;
+    transform: translateX(5px); /* Move levemente para a direita no hover */
 }

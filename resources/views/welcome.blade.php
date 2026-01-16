@@ -14,19 +14,12 @@
 
 <body class="dark-theme">
 
-    <header>
-        <div class="logo">
-            <span class="glitch" data-text="TIC-TAC-TOE">TIC-TAC-TOE</span>
-            <span class="subtitle">ARENA PRO</span>
-        </div>
-    </header>
-
     <main class="container">
         <!-- Coluna Esquerda: Tabuleiro e Controles -->
         <div class="left-panel">
             <section id="tabuleiro-section" class="glass-card">
                 <div class="section-header">
-                    <h2><span class="dot"></span> Partida Atual</h2>
+                    <h2><span class="dot glitch "></span> JOGO DA VELHA</h2>
                     <button id="btn-novo-jogo" class="btn-primary">Novo Jogo 🎮</button>
                 </div>
 
@@ -47,7 +40,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="status-turno">
                     <span>Vez de:</span>
                     <strong id="vez-jogador">X</strong>
@@ -62,18 +55,31 @@
 
             <section id="replay-section" class="glass-card mt-20">
                 <h2>🎞️ Replay da Partida</h2>
-                <div id="replay-controls">
-                    <button id="replay-voltar" title="Voltar">⏮️</button>
-                    <button id="replay-pausar" title="Pausar">⏸️</button>
-                    <button id="replay-continuar" title="Reproduzir" class="btn-glow">▶️</button>
-                    <button id="replay-avancar" title="Avançar">⏭️</button>
-                </div>
-                <div id="replay-tabuleiro" class="tabuleiro-mini">
-                    @for ($i = 0; $i < 9; $i++)
-                        <div class="celula-mini" data-posicao="{{ $i }}"></div>
-                    @endfor
+
+                <div class="replay-wrapper"> <!-- Novo container -->
+                    <div id="replay-controls">
+                        <button id="replay-voltar" title="Voltar">
+                            <span>⏮️</span> <small>Voltar</small>
+                        </button>
+                        <button id="replay-pausar" title="Pausar">
+                            <span>⏸️</span> <small>Pausar</small>
+                        </button>
+                        <button id="replay-continuar" title="Reproduzir" class="btn-glow">
+                            <span>▶️</span> <small>Play</small>
+                        </button>
+                        <button id="replay-avancar" title="Avançar">
+                            <span>⏭️</span> <small>Avançar</small>
+                        </button>
+                    </div>
+
+                    <div id="replay-tabuleiro" class="tabuleiro-mini">
+                        @for ($i = 0; $i < 9; $i++)
+                            <div class="celula-mini" data-posicao="{{ $i }}"></div>
+                        @endfor
+                    </div>
                 </div>
             </section>
+
         </div>
 
         <!-- Coluna Direita: Ranking e Histórico -->
